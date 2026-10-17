@@ -1,15 +1,43 @@
+import { useState } from 'react'
 import { movies } from './data.js'
 import MovieCard from './components/MovieCard.jsx'
 import './App.css'
 
+const allGenres = ['All', ...new Set(movies.flatMap((m) => m.genres))]
+
 function App() {
+  const [search, setSearch] = useState('')
+  const [genre, setGenre] = useState('All')
+
+  const filteredMovies = movies.filter((movie) => {
+    const matchesSearch = movie.title.toLowerCase().includes(search.toLowerCase())
+    const matchesGenre = genre === 'All' || movie.genres.includes(genre)
+    return matchesSearch && matchesGenre
+  })
+
   return (
     <div className="app">
       <h1>Movie Taste Engine</h1>
       <p className="tagline">Like movies. Get recommendations.</p>
 
+      <div className="controls">
+        <input
+          type="text"
+          placeholder="Search movies..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <select value={genre} onChange={(e) => setGenre(e.target.value)}>
+          {allGenres.map((g) => (
+            <option key={g} value={g}>{g}</option>
+          ))}
+        </select>
+      </div>
+
+      {filteredMovies.length === 0 && <p className="empty">No movies found.</p>}
+
       <div className="movie-grid">
-        {movies.map((movie) => (
+        {filteredMovies.map((movie) => (
           <MovieCard key={movie.id} movie={movie} />
         ))}
       </div>
