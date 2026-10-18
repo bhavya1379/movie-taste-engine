@@ -1,46 +1,34 @@
-import { useState } from 'react'
-import { movies } from './data.js'
-import MovieCard from './components/MovieCard.jsx'
+import { Routes, Route, Link } from 'react-router-dom'
+import Home from './pages/Home.jsx'
+import MovieDetail from './pages/MovieDetail.jsx'
+import Profile from './pages/Profile.jsx'
+import ForYou from './pages/ForYou.jsx'
+import Watchlist from './pages/Watchlist.jsx'
+import Compare from './pages/Compare.jsx'
 import './App.css'
 
-const allGenres = ['All', ...new Set(movies.flatMap((m) => m.genres))]
-
 function App() {
-  const [search, setSearch] = useState('')
-  const [genre, setGenre] = useState('All')
-
-  const filteredMovies = movies.filter((movie) => {
-    const matchesSearch = movie.title.toLowerCase().includes(search.toLowerCase())
-    const matchesGenre = genre === 'All' || movie.genres.includes(genre)
-    return matchesSearch && matchesGenre
-  })
-
   return (
     <div className="app">
-      <h1>Movie Taste Engine</h1>
-      <p className="tagline">Like movies. Get recommendations.</p>
+      <header>
+        <Link to="/" className="logo">Movie Taste Engine</Link>
+        <nav>
+          <Link to="/">Home</Link>
+          <Link to="/for-you">For You</Link>
+          <Link to="/profile">Profile</Link>
+          <Link to="/watchlist">Watchlist</Link>
+          <Link to="/compare">Compare</Link>
+        </nav>
+      </header>
 
-      <div className="controls">
-        <input
-          type="text"
-          placeholder="Search movies..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <select value={genre} onChange={(e) => setGenre(e.target.value)}>
-          {allGenres.map((g) => (
-            <option key={g} value={g}>{g}</option>
-          ))}
-        </select>
-      </div>
-
-      {filteredMovies.length === 0 && <p className="empty">No movies found.</p>}
-
-      <div className="movie-grid">
-        {filteredMovies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
-      </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/movie/:id" element={<MovieDetail />} />
+        <Route path="/for-you" element={<ForYou />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/watchlist" element={<Watchlist />} />
+        <Route path="/compare" element={<Compare />} />
+      </Routes>
     </div>
   )
 }
