@@ -2,6 +2,8 @@
 
 A movie app where you like or dislike titles and it recommends more based on your taste.
 
+**Live demo:** https://bhavya1379.github.io/movie-taste-engine/
+
 ![Screenshot](screenshot.png)
 
 ## Features
