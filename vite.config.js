@@ -3,6 +3,6 @@ import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/movie-taste-engine/',
+  base: process.env.VERCEL ? '/' : '/movie-taste-engine/',
   plugins: [react()],
 })
